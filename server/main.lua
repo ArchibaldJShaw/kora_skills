@@ -200,7 +200,7 @@ end
 AddEventHandler('kora_skills:server:databaseReady', function()
     local registered, err = exports.kora_core:registerPlayerDataField('skills', loadPlayerSkills)
     if not registered then
-        print(('^1[kora_skills]^7 could not register PlayerData.skills: %s'):format(tostring(err)))
+        Kora.logging.error('playerdata.register_failed', 'Could not register PlayerData.skills', { error = tostring(err) })
     end
 end)
 

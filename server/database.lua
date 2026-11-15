@@ -93,16 +93,16 @@ end
 
 CreateThread(function()
     while not Kora.sql.ready(60000) do
-        print('^3[kora_skills]^7 still waiting for kora_sql; schema setup will resume automatically.')
+        Kora.logging.warn('schema.waiting_for_sql', 'Still waiting for kora_sql; schema setup will resume automatically')
     end
     local reports, err = Kora.sql.ensureTables(KoraSkillsSchema)
     if err then
-        print(('^1[kora_skills]^7 schema setup failed: %s'):format(tostring(err)))
+        Kora.logging.error('schema.setup_failed', 'Skills schema setup failed', { error = tostring(err) })
         return
     end
     for _, report in ipairs(reports or {}) do
         for _, warning in ipairs(report.warnings or {}) do
-            print(('^3[kora_skills]^7 schema warning: %s'):format(tostring(warning)))
+            Kora.logging.warn('schema.warning', 'Skills schema warning', { warning = tostring(warning) })
         end
     end
     TriggerEvent('kora_skills:server:databaseReady')
